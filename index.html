@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OWOWOWOW Surprise OwO🎂</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;font-family:Arial,sans-serif;overflow:hidden;
+ background:linear-gradient(135deg,#ffb6d9,#c8a2ff)
+}
+
+button{
+ border:0;border-radius:12px;padding:12px 20px;font-size:16px;
+ cursor:pointer;background:#ff4f91;color:white;transition:.2s
+}
+
+button:hover{transform:scale(1.05)}
+
+#passwordScreen,#surpriseScreen,#cakeSlide,#messageSlide{
+ position:fixed;inset:0
+}
+
+#passwordScreen,#surpriseScreen{
+ display:flex;justify-content:center;align-items:center;
+ background:linear-gradient(135deg,#ffb6d9,#c8a2ff)
+}
+
+#passwordScreen{z-index:1000}
+#surpriseScreen{display:none;z-index:900}
+
+.passwordCard,.surpriseCard,.messageCard{
+ background:rgba(255,255,255,.95);
+ border-radius:25px;text-align:center;
+ box-shadow:0 10px 30px rgba(0,0,0,.2)
+}
+
+.passwordCard{
+ padding:35px;width:90%;max-width:400px
+}
+
+.passwordCard h1,.surpriseCard h1,.messageCard h1{
+ color:#ff4f91
+}
+
+.passwordCard input{
+ width:100%;padding:13px;margin:15px 0;
+ border:2px solid #ffb3c6;border-radius:10px;
+ font-size:16px;outline:0
+}
+
+.surpriseCard{padding:40px}
+
+
+#cakeSlide{
+ display:none;justify-content:center;align-items:center;
+ flex-direction:column;padding:30px;text-align:center;
+ background:
+ linear-gradient(rgba(255,105,180,.35),rgba(165,94,234,.35)),
+ url("Chiikawa2.jpg") center/cover no-repeat;
+ overflow-y:auto;z-index:100
+}
+
+#cakeSlide:before{
+ content:"";position:absolute;width:90%;max-width:650px;height:90%;
+ background:rgba(255,255,255,.9);border-radius:25px;
+ box-shadow:0 10px 35px rgba(0,0,0,.25);z-index:0
+}
+
+#cakeSlide>*{position:relative;z-index:1}
+
+#birthdayText{
+ color:#ff4f91;opacity:0;min-height:45px;
+ transition:opacity 1.5s;
+ text-shadow:0 2px 8px white
+}
+
+#cakeSlide>p{
+ color:#555;background:rgba(255,255,255,.85);
+ padding:10px 18px;border-radius:15px;margin:5px auto
+}
+
+
+.cake{
+ position:relative;width:260px;height:220px;margin:30px auto;
+ animation:float 2.5s ease-in-out infinite;
+ filter:drop-shadow(0 10px 12px rgba(255,79,145,.35))
+}
+
+.bottom,.middle,.top{
+ position:absolute;left:50%;transform:translateX(-50%);
+ border-radius:15px;animation:glow 2s infinite
+}
+
+.bottom{width:250px;height:80px;bottom:0;background:#ff8fab}
+.middle{width:210px;height:65px;bottom:65px;background:#ffb3c6}
+.top{width:170px;height:55px;bottom:120px;background:#ffc8dd}
+
+.candle{
+ position:absolute;width:25px;height:70px;background:white;
+ border:3px solid #ff4f91;border-radius:5px;
+ left:50%;transform:translateX(-50%);bottom:175px;
+ z-index:5;animation:candle 2s infinite;
+ transform-origin:bottom
+}
+
+.flame{
+ position:absolute;width:25px;height:35px;background:#ffd700;
+ border-radius:50%;top:-38px;left:50%;
+ transform:translateX(-50%);
+ box-shadow:0 0 15px #ffd700,0 0 30px #ff9f43;
+ animation:flame .18s infinite alternate
+}
+
+.control-button{margin:5px}
+#nextButton{display:none;margin-top:15px}
+
+@keyframes float{
+ 0%,100%{transform:translateY(0)}
+ 50%{transform:translateY(-8px)}
+}
+
+@keyframes glow{
+ 0%,100%{filter:brightness(1)}
+ 50%{filter:brightness(1.08)}
+}
+
+@keyframes candle{
+ 0%,100%{transform:translateX(-50%) rotate(-1deg)}
+ 50%{transform:translateX(-50%) rotate(1deg)}
+}
+
+@keyframes flame{
+ from{transform:translateX(-50%) scale(1) rotate(-3deg)}
+ to{transform:translateX(-50%) scale(1.15) rotate(3deg)}
+}
+
+
+.confetti{
+ position:fixed;top:-20px;width:10px;height:14px;
+ border-radius:2px;animation:fall linear forwards;z-index:500
+}
+
+.confetti.burst{
+ top:45vh;animation:burst ease-out forwards
+}
+
+@keyframes fall{
+ to{transform:translate(var(--x),110vh) rotate(var(--r));opacity:0}
+}
+
+@keyframes burst{
+ from{transform:translate(0) rotate(0);opacity:1}
+ to{transform:translate(var(--x),var(--y)) rotate(var(--r));opacity:0}
+}
+
+
+#messageSlide{
+ display:none;justify-content:center;align-items:center;
+ padding:20px;overflow-y:auto;z-index:250;
+ background:
+ linear-gradient(rgba(255,105,180,.35),rgba(165,94,234,.35)),
+ url("chiikawa1.webp") center/cover no-repeat
+}
+
+.messageCard{
+ width:90%;max-width:650px;padding:35px;
+ background:rgba(255,255,255,.9);
+ box-shadow:0 10px 35px rgba(0,0,0,.25)
+}
+
+#personalMessage{
+ white-space:pre-line;color:#555;font-size:18px;line-height:1.7
+}
+
+.audioSection{margin-top:25px}
+.audioSection h3{color:#a55eea}
+audio{width:100%;max-width:450px}
+#backButton{margin-top:20px;background:#a55eea}
+
+
+
+.floating-heart{
+ position:fixed;bottom:-30px;font-size:25px;
+ pointer-events:none;animation:emoji linear forwards;z-index:251
+}
+
+@keyframes emoji{
+ 20%{opacity:1}
+ to{transform:translateY(-110vh) rotate(360deg);opacity:0}
+}
+
+
+
+@media(max-width:600px){
+
+ #cakeSlide{padding:20px}
+
+ #cakeSlide:before{
+  width:94%;height:92%
+ }
+
+ .cake{
+  transform:scale(.8);margin:10px auto;
+  animation:mobileFloat 2.5s ease-in-out infinite
+ }
+
+ @keyframes mobileFloat{
+  0%,100%{transform:scale(.8) translateY(0)}
+  50%{transform:scale(.8) translateY(-8px)}
+ }
+
+ .messageCard{padding:25px 20px}
+ #personalMessage{font-size:16px}
+}
+
+</style>
+</head>
+
+<body>
+
+
+<div id="passwordScreen">
+
+ <div class="passwordCard">
+
+  <h1>🎂 Birthday Surprise</h1>
+
+  <p>Enter your password: clue, your fav flower</p>
+
+  <input
+   type="password"
+   id="passwordInput"
+   placeholder="Enter password"
+  >
+
+  <button id="unlockButton">
+   🔓 Unlock
+  </button>
+
+ </div>
+
+</div>
+
+
+
+<div id="surpriseScreen">
+
+ <div class="surpriseCard">
+
+  <h1>🎁 You Have a Surprise!</h1>
+
+  <p>Are u redehhh!!!!</p>
+
+  <button id="openButton">
+   Open Surprise 🎉
+  </button>
+
+ </div>
+
+</div>
+
+
+<div id="cakeSlide">
+
+ <h1 id="birthdayText"></h1>
+
+ <p>
+  Blow into your microphone to blow out the candle! 🎤
+ </p>
+
+ <div class="cake">
+
+  <div class="candle">
+
+   <div
+    class="flame"
+    id="flame">
+   </div>
+
+  </div>
+
+  <div class="top"></div>
+  <div class="middle"></div>
+  <div class="bottom"></div>
+
+ </div>
+
+ <button
+  class="control-button"
+  id="micButton">
+
+  🎤 Turn On Microphone
+
+ </button>
+
+ <button
+  class="control-button"
+  id="lightButton">
+
+  🔥 Light Candle
+
+ </button>
+
+ <button id="nextButton">
+  Next 💌
+ </button>
+
+</div>
+
+
+<div id="messageSlide">
+
+ <div class="messageCard">
+
+  <h1>🎂 A Little Message</h1>
+
+  <p id="personalMessage"></p>
+
+  <div class="audioSection">
+
+   <h3>🎵 HAPOY BERTDOY</h3>
+
+   <audio id="messageAudio" controls>
+
+    <source
+     src="birthday-song.mp3"
+     type="audio/mpeg">
+
+    Your browser does not support
+    the audio player.
+
+   </audio>
+
+  </div>
+
+  <button id="backButton">
+   ← Back to Cake
+  </button>
+
+ </div>
+
+</div>
+
+
+<script>
+
+
+const $=id=>document.getElementById(id);
+
+
+const correctPassword="Pinklily";
+
+
+function unlock(){
+
+ const p=$("passwordInput").value.trim();
+
+ if(!p)
+  return alert("Please enter the password!");
+
+ if(p!==correctPassword)
+  return alert("Wrong password! Try again.");
+
+ $("passwordScreen").style.display="none";
+ $("surpriseScreen").style.display="flex";
+}
+
+
+$("unlockButton").onclick=unlock;
+
+
+$("passwordInput").onkeydown=e=>{
+
+ if(e.key==="Enter")
+  unlock();
+
+};
+
+
+$("openButton").onclick=()=>{
+
+ $("surpriseScreen").style.display="none";
+ $("cakeSlide").style.display="flex";
+
+ createConfetti();
+};
+
+let candleLit=true;
+
+
+function blowOutCandle(){
+
+ if(!candleLit)
+  return;
+
+ $("flame").style.display="none";
+
+ candleLit=false;
+
+ $("birthdayText").innerText=
+  "HAPPY BIRTHDAY THEAA 🎉";
+
+ $("birthdayText").style.opacity=1;
+
+ $("nextButton").style.display=
+  "inline-block";
+
+ createConfetti();
+
+ createConfettiBurst();
+}
+
+
+/* RELIGHT */
+
+$("lightButton").onclick=()=>{
+
+ $("flame").style.display="block";
+
+ candleLit=true;
+
+ $("birthdayText").innerText="";
+
+ $("birthdayText").style.opacity=0;
+
+ $("nextButton").style.display="none";
+};
+
+
+let analyser;
+
+let microphoneOn=false;
+
+let previousVolume=0;
+
+let blowFrames=0;
+
+let blowDetected=false;
+
+
+$("micButton").onclick=async()=>{
+
+ if(microphoneOn)
+  return;
+
+ try{
+
+  const stream=
+   await navigator.mediaDevices.getUserMedia({
+
+    audio:{
+     echoCancellation:false,
+     noiseSuppression:false,
+     autoGainControl:false
+    }
+
+   });
+
+
+  const AudioCtx=
+   window.AudioContext||
+   window.webkitAudioContext;
+
+
+  const audioContext=
+   new AudioCtx();
+
+
+  if(audioContext.state==="suspended")
+   await audioContext.resume();
+
+
+  analyser=
+   audioContext.createAnalyser();
+
+
+  analyser.fftSize=512;
+
+  analyser.smoothingTimeConstant=.15;
+
+
+  const microphone=
+   audioContext.createMediaStreamSource(
+    stream
+   );
+
+
+  microphone.connect(analyser);
+
+
+  microphoneOn=true;
+
+
+  $("micButton").innerText=
+   "🎤 Microphone On";
+
+
+  detectBlow();
+
+
+ }catch(e){
+
+  alert(
+   "Please allow microphone access and try again."
+  );
+
+  console.log(e);
+
+ }
+
+};
+
+
+function detectBlow(){
+
+ if(!analyser)
+  return;
+
+
+ const data=
+  new Uint8Array(
+   analyser.frequencyBinCount
+  );
+
+
+ analyser.getByteFrequencyData(data);
+
+
+ const n=data.length;
+
+ let low=0;
+
+ let mid=0;
+
+ let volume=0;
+
+
+ for(let i=0;i<n;i++){
+
+  volume+=data[i];
+
+  if(i<n*.30)
+   low+=data[i];
+
+  else if(i<n*.65)
+   mid+=data[i];
+
+ }
+
+
+ volume/=n;
+
+ low/=n*.30;
+
+ mid/=n*.35;
+
+
+ const increase=
+  volume-previousVolume;
+
+
+ previousVolume=
+  previousVolume*.75+
+  volume*.25;
+
+
+
+ const loudEnough=
+  volume>18;
+
+
+ const suddenIncrease=
+  increase>1.5;
+
+
+ const lowFrequency=
+  low>18;
+
+
+ const lowDominant=
+  low>mid*.9;
+
+
+ if(
+  loudEnough&&
+  suddenIncrease&&
+  lowFrequency&&
+  lowDominant
+ ){
+
+  blowFrames++;
+
+ }else{
+
+
+  blowFrames=
+   Math.max(
+    0,
+    blowFrames-1
+   );
+
+ }
+
+
+ if(
+  blowFrames>=3&&
+  !blowDetected
+ ){
+
+  blowDetected=true;
+
+  blowOutCandle();
+
+  blowFrames=0;
+
+
+  setTimeout(()=>{
+
+   blowDetected=false;
+
+  },1500);
+
+ }
+
+
+ requestAnimationFrame(
+  detectBlow
+ );
+
+}
+
+
+
+const colors=[
+
+ "#ff4f91",
+ "#ffd700",
+ "#4facfe",
+ "#7bed9f",
+ "#ff6b6b",
+ "#a55eea",
+ "#ff9f43"
+
+];
+
+
+const randomColor=()=>
+ colors[
+  Math.floor(
+   Math.random()*colors.length
+  )
+ ];
+
+
+function createConfetti(){
+
+ for(let i=0;i<100;i++)
+  makeConfetti(false);
+
+}
+
+
+function makeConfetti(burst){
+
+ const c=
+  document.createElement("div");
+
+
+ c.className=
+  "confetti"+
+  (burst?" burst":"");
+
+
+ c.style.left=
+  burst
+  ?"50vw"
+  :Math.random()*100+"vw";
+
+
+ c.style.backgroundColor=
+  randomColor();
+
+
+ c.style.setProperty(
+  "--x",
+  (
+   Math.random()*
+   (burst?500:240)-
+   (burst?250:120)
+  )+"px"
+ );
+
+
+ c.style.setProperty(
+  "--y",
+  (
+   Math.random()*500-250
+  )+"px"
+ );
+
+
+ c.style.setProperty(
+  "--r",
+  (
+   Math.random()*720+360
+  )+"deg"
+ );
+
+
+ c.style.width=
+  Math.random()*8+6+"px";
+
+
+ c.style.height=
+  Math.random()*10+8+"px";
+
+
+ c.style.animationDuration=
+  Math.random()*
+  (burst?1.5:3)+
+  (burst?1:2)+
+  "s";
+
+
+ if(!burst)
+  c.style.animationDelay=
+   Math.random()*.5+"s";
+
+
+ document.body.appendChild(c);
+
+
+ setTimeout(()=>{
+
+  c.remove();
+
+ },burst?2500:6000);
+
+}
+
+
+function createConfettiBurst(){
+
+ for(let i=0;i<50;i++)
+  makeConfetti(true);
+
+}
+
+
+
+const message=
+`HAPII BIRTDAYYY! 🎂
+
+I hope you have an amazing day and mapasa mo ang iyong mga examss🤞, i wish you the very besttt!!. ✨
+
+Enjoy your bdayyy ito muna aking munting maibibigay T-T😎`;
+
+
+
+$("nextButton").onclick=()=>{
+
+ $("cakeSlide").style.display="none";
+
+ $("messageSlide").style.display="flex";
+
+ $("personalMessage").innerText=
+  message;
+
+ createConfetti();
+
+ createFloatingEmojis();
+
+
+ setTimeout(()=>{
+
+  $("messageAudio")
+   .play()
+   .catch(()=>{
+
+    console.log(
+     "Autoplay was blocked."
+    );
+
+   });
+
+ },500);
+
+};
+
+
+function createFloatingEmojis(){
+
+ const emojis=[
+  "🎂",
+  "🎉",
+  "🧁",
+  "🎊",
+  "✨",
+  "⭐",
+  "🌸"
+ ];
+
+
+ for(let i=0;i<25;i++){
+
+  const e=
+   document.createElement("div");
+
+
+  e.className=
+   "floating-heart";
+
+
+  e.innerText=
+   emojis[
+    Math.floor(
+     Math.random()*
+     emojis.length
+    )
+   ];
+
+
+  e.style.left=
+   Math.random()*100+"vw";
+
+
+  e.style.fontSize=
+   Math.random()*15+20+"px";
+
+
+  e.style.animationDuration=
+   Math.random()*5+5+"s";
+
+
+  e.style.animationDelay=
+   Math.random()*3+"s";
+
+
+  document.body.appendChild(e);
+
+
+  setTimeout(()=>{
+
+   e.remove();
+
+  },10000);
+
+ }
+
+}
+
+
+$("backButton").onclick=()=>{
+
+ $("messageSlide").style.display="none";
+
+ $("cakeSlide").style.display="flex";
+
+ $("messageAudio").pause();
+
+ $("messageAudio").currentTime=0;
+
+};
+
+</script>
+
+</body>
+</html>
